@@ -1,4 +1,5 @@
 const { User } = require("../models/user");
+const { setUser } = require("../service/auth");
 const { v4: uuidv4 } = require("uuid");
 
 const handleUserSignup = async (req, res) => {
@@ -29,6 +30,9 @@ const handleUserLogin = async (req, res) => {
   if (!user) return res.render("login");
 
   const sessionId = uuidv4();
+  setUser(sessionId, user);
+
+  res.cookie("uid", sessionId);
   return res.redirect("/");
 };
 

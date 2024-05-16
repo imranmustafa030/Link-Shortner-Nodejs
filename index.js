@@ -4,6 +4,7 @@ const { connectToMongoDb } = require("./connect");
 const { URL } = require("./models/url");
 
 const urlRoute = require("./routers/url");
+const userRoute = require("./routers/user");
 const staticRoute = require("./routers/staticRouter");
 
 const app = express();
@@ -14,12 +15,13 @@ connectToMongoDb("mongodb://localhost:27017/short-url").then(() => {
 });
 
 app.use(express.json());
-app.use(express.urlencoded({extended: false}))
+app.use(express.urlencoded({ extended: false }));
 
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 
 app.use("/url", urlRoute);
+app.use("/user", userRoute);
 app.use("/", staticRoute);
 
 app.get("/url/:shortId", async (req, res) => {
